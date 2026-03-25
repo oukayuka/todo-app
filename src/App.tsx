@@ -1,129 +1,101 @@
 import { useState } from "react";
-import heroImg from "./assets/hero.png";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import "./App.css";
+
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState("");
+
+  const addTodo = () => {
+    const trimmed = input.trim();
+    if (!trimmed) return;
+    setTodos((prev) => [
+      ...prev,
+      { id: Date.now(), text: trimmed, completed: false },
+    ]);
+    setInput("");
+  };
+
+  const toggleTodo = (id: number) => {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
+  };
+
+  const deleteTodo = (id: number) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+    <div className="mx-auto min-h-svh max-w-lg px-4 py-12">
+      <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 dark:text-gray-100">
+        Todo App
+      </h1>
+
+      <form
+        className="mb-6 flex gap-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          addTodo();
+        }}
+      >
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="新しいタスクを入力..."
+          className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-gray-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:ring-blue-800"
+        />
         <button
-          className="counter"
-          type="button"
-          onClick={() => setCount((count) => count + 1)}
+          type="submit"
+          className="rounded-lg bg-blue-500 px-6 py-2 font-medium text-white transition-colors hover:bg-blue-600 active:bg-blue-700"
         >
-          Count is {count}
+          追加
         </button>
-      </section>
+      </form>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank" rel="noopener">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank" rel="noopener">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a
-                href="https://github.com/vitejs/vite"
-                target="_blank"
-                rel="noopener"
+      {todos.length === 0 ? (
+        <p className="text-center text-gray-400">タスクがありません</p>
+      ) : (
+        <ul className="space-y-2">
+          {todos.map((todo) => (
+            <li
+              key={todo.id}
+              className="flex items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 dark:border-gray-700"
+            >
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+                className="h-5 w-5 accent-blue-500"
+              />
+              <span
+                className={`flex-1 ${
+                  todo.completed
+                    ? "text-gray-400 line-through"
+                    : "text-gray-800 dark:text-gray-100"
+                }`}
               >
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank" rel="noopener">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank" rel="noopener">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://bsky.app/profile/vite.dev"
-                target="_blank"
-                rel="noopener"
+                {todo.text}
+              </span>
+              <button
+                type="button"
+                onClick={() => deleteTodo(todo.id)}
+                className="text-gray-400 transition-colors hover:text-red-500"
               >
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
+                削除
+              </button>
             </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
