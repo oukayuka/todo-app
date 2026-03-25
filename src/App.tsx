@@ -8,8 +8,8 @@ function App() {
 
   const addTodo = (text: string) => {
     setTodos((prev) => [
-      ...prev,
       { id: Date.now(), text, completed: false },
+      ...prev,
     ]);
   };
 
