@@ -4,10 +4,11 @@ import { TodoItem } from "./TodoItem";
 interface TodoListProps {
   todos: Todo[];
   onToggle: (id: number) => void;
+  onEdit: (id: number, text: string) => void;
   onDelete: (id: number) => void;
 }
 
-export function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
+export function TodoList({ todos, onToggle, onEdit, onDelete }: TodoListProps) {
   if (todos.length === 0) {
     return <p className="text-center text-gray-400">タスクがありません</p>;
   }
@@ -19,6 +20,7 @@ export function TodoList({ todos, onToggle, onDelete }: TodoListProps) {
           key={todo.id}
           todo={todo}
           onToggle={onToggle}
+          onEdit={onEdit}
           onDelete={onDelete}
         />
       ))}

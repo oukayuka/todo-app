@@ -21,6 +21,12 @@ function App() {
     );
   };
 
+  const editTodo = (id: number, text: string) => {
+    setTodos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, text } : todo)),
+    );
+  };
+
   const deleteTodo = (id: number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   };
@@ -31,7 +37,12 @@ function App() {
         Awesome Todo List
       </h1>
       <TodoForm onAdd={addTodo} />
-      <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+      <TodoList
+        todos={todos}
+        onToggle={toggleTodo}
+        onEdit={editTodo}
+        onDelete={deleteTodo}
+      />
     </div>
   );
 }
