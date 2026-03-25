@@ -35,7 +35,7 @@ function App() {
   return (
     <div className="mx-auto min-h-svh max-w-lg px-4 py-12">
       <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 dark:text-gray-100">
-        Todo App
+        Awesome Todo List
       </h1>
 
       <form
