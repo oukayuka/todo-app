@@ -58,6 +58,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
           className="flex-1 rounded border border-blue-400 px-2 py-1 text-gray-800 outline-none dark:bg-gray-800 dark:text-gray-100"
         />
       ) : (
+        // biome-ignore lint/a11y/noStaticElementInteractions: テキスト表示が主目的。ダブルクリック編集は補助的な操作
         <span
           onDoubleClick={() => setEditing(true)}
           className={`flex-1 cursor-pointer ${
