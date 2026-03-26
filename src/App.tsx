@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import type { TodoFilter as FilterType, Todo } from "./types/todo";
+import { TodoFilter } from "./ui/TodoFilter";
 import { TodoForm } from "./ui/TodoForm";
 import { TodoList } from "./ui/TodoList";
-import type { Todo } from "./types/todo";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [filter, setFilter] = useState<FilterType>("all");
+
+  const filteredTodos = useMemo(() => {
+    switch (filter) {
+      case "active":
+        return todos.filter((todo) => !todo.completed);
+      case "completed":
+        return todos.filter((todo) => todo.completed);
+      default:
+        return todos;
+    }
+  }, [todos, filter]);
 
   const addTodo = (text: string) => {
-    setTodos((prev) => [
-      { id: Date.now(), text, completed: false },
-      ...prev,
-    ]);
+    setTodos((prev) => [{ id: Date.now(), text, completed: false }, ...prev]);
   };
 
   const toggleTodo = (id: number) => {
@@ -37,8 +47,9 @@ function App() {
         Awesome Todo List
       </h1>
       <TodoForm onAdd={addTodo} />
+      <TodoFilter current={filter} onChange={setFilter} />
       <TodoList
-        todos={todos}
+        todos={filteredTodos}
         onToggle={toggleTodo}
         onEdit={editTodo}
         onDelete={deleteTodo}
