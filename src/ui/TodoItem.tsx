@@ -55,7 +55,7 @@ export function TodoItem({ todo, onToggle, onEdit, onDelete }: TodoItemProps) {
             if (e.key === "Enter") commitEdit();
             if (e.key === "Escape") cancelEdit();
           }}
-          className="flex-1 rounded border border-blue-400 px-2 py-1 text-gray-800 outline-none dark:bg-gray-800 dark:text-gray-100"
+          className="flex-1 rounded border border-blue-400 bg-white px-2 py-1 text-gray-800 outline-none dark:bg-gray-700 dark:text-gray-100"
         />
       ) : (
         <span
