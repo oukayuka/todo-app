@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { Todo } from "./types/todo";
 import { TodoForm } from "./ui/TodoForm";
 import { TodoList } from "./ui/TodoList";
-import type { Todo } from "./types/todo";
+
+const STORAGE_KEY = "todos";
+
+const loadTodos = (): Todo[] => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return [];
+
+  try {
+    return JSON.parse(stored) as Todo[];
+  } catch {
+    return [];
+  }
+};
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(loadTodos);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (text: string) => {
-    setTodos((prev) => [
-      { id: Date.now(), text, completed: false },
-      ...prev,
-    ]);
+    setTodos((prev) => [{ id: Date.now(), text, completed: false }, ...prev]);
   };
 
   const toggleTodo = (id: number) => {
