@@ -13,16 +13,16 @@ const filters: { value: FilterType; label: string }[] = [
 
 export function TodoFilter({ current, onChange }: TodoFilterProps) {
   return (
-    <div className="mb-4 flex gap-2">
+    <div className="mb-4 inline-flex rounded-lg border border-gray-200 dark:border-gray-600">
       {filters.map(({ value, label }) => (
         <button
           key={value}
           type="button"
           onClick={() => onChange(value)}
-          className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+          className={`px-4 py-1.5 text-sm font-medium transition-colors first:rounded-l-lg last:rounded-r-lg ${
             current === value
-              ? "bg-blue-500 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+              ? "bg-gray-200 text-gray-900 dark:bg-gray-600 dark:text-gray-100"
+              : "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
           }`}
         >
           {label}
